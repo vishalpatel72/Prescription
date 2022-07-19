@@ -126,6 +126,7 @@ def update_nonallo_green():
   df_non_green = df_non_green[1:] #take the data less the header row
   df_non_green.columns = new_header #set the header row as the df header
   df_non_green
+  print("h1")
 
 def update_nonallo_red():
   sheet = file.open("NonAllopathy_Red")  #open sheet
@@ -139,6 +140,7 @@ def update_nonallo_red():
   df_non_red = df_non_red[1:] #take the data less the header row
   df_non_red.columns = new_header #set the header row as the df header
   df_non_red
+  print("h2")
 
 def update_allo():
   sheet = file.open("Allopathy")  #open sheet
@@ -152,6 +154,7 @@ def update_allo():
   df_allo = df_allo[1:] #take the data less the header row
   df_allo.columns = new_header #set the header row as the df header
   df_allo
+  print("h3")
 
 def update_master():
   result = [df_non_green , df_non_red , df_allo]
@@ -168,6 +171,7 @@ def update_master():
 
 
   sheet.update(None, data)
+  print("h4")
 
 def update_warehouse():
   df_non_green_packed = df_non_green[df_non_green['Operations']=='Packed']
@@ -189,6 +193,7 @@ def update_warehouse():
   #worksheet_non_green = gc.open_by_key('https://docs.google.com/spreadsheets/d/18lJ-j8E3jb3ktTXWIEiV9E74-P6xBYTyJhjo0DwipMQ/edit#gid=478417104').sheet1
 
   sheet.update(None, data3)
+  print("h5")
 
 def update_cancelled():
   df_non_green_cancelled = df_non_green[df_non_green['Confirmed']=='Cancelled']
@@ -209,6 +214,7 @@ def update_cancelled():
 
 
   sheet.update(None, data4)
+  print("h6")
 
 schedule.every(4).seconds.do(update_nonallo_green)
 schedule.every(4).seconds.do(update_nonallo_red)
