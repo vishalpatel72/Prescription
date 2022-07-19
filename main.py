@@ -11,7 +11,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import pandas as pd
-import schedule
+#import schedule
 import time
 
 import gspread
@@ -58,6 +58,7 @@ lst1 = df_non_red.to_numpy().tolist()
 headers1 = df_non_red.columns.tolist()
 data1 = [headers1] + lst1
 
+
 sheet = file.open("NonAllopathy_Red") 
 sheet = sheet.sheet1 
 
@@ -77,7 +78,7 @@ sheet = sheet.sheet1
 
 sheet.update(None, data2)
 
-df_non_green_packed = df_non_green[df_non_green['Operations']=='Packed']
+"""df_non_green_packed = df_non_green[df_non_green['Operations']=='Packed']
 df_allo_packed = df_allo[df_allo['Operations']=='Packed']
 df_non_red_packed = df_non_red[df_non_red['Operations']=='Packed']
 
@@ -93,14 +94,14 @@ data3 = [headers3] + lst3
 sheet = file.open("Warehouse") 
 sheet = sheet.sheet1 
 
-#worksheet_non_green = gc.open_by_key('https://docs.google.com/spreadsheets/d/18lJ-j8E3jb3ktTXWIEiV9E74-P6xBYTyJhjo0DwipMQ/edit#gid=478417104').sheet1
-
 sheet.update(None, data3)
 
 df_non_green_cancelled = df_non_green[df_non_green['Confirmed']=='Cancelled']
 df_allo_cancelled = df_allo[df_allo['Confirmed']== 'Cancelled']
 df_non_red_cancelled = df_non_red[df_non_red['Confirmed']=='Cancelled']
 df_confirmation_cancelled = df[df['Confirmed']=='Cancelled']
+
+
 
 res = [df_non_green_cancelled , df_allo_cancelled , df_non_red_cancelled]
 
@@ -117,51 +118,43 @@ sheet = sheet.sheet1
 
 sheet.update(None, data4)
 
-def update_nonallo_green():
-  sheet = file.open("NonAllopathy_Green")  #open sheet
-  sheet = sheet.sheet1 
-  rows = sheet.get_all_values()
-  df_non_green = pd.DataFrame.from_records(rows)
+"
+"""
+
+def update_master():
+  sheet_1 = file.open("NonAllopathy_Green")  #open sheet
+  sheetg = sheet_1.sheet1 
+  rows_g = sheetg.get_all_values()
+  df_non_green = pd.DataFrame.from_records(rows_g)
   new_header = df_non_green.iloc[0] #grab the first row for the header
   df_non_green = df_non_green[1:] #take the data less the header row
   df_non_green.columns = new_header #set the header row as the df header
-  df_non_green
-  print("h1")
 
-def update_nonallo_red():
-  sheet = file.open("NonAllopathy_Red")  #open sheet
-  sheet = sheet.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
-
-  rows = sheet.get_all_values()
+  sheet_2 = file.open("NonAllopathy_Red")  #open sheet
+  sheetr = sheet_2.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+  rows = sheetr.get_all_values()
   #print(rows)
-
   df_non_red = pd.DataFrame.from_records(rows)
   new_header = df_non_red.iloc[0] #grab the first row for the header
   df_non_red = df_non_red[1:] #take the data less the header row
   df_non_red.columns = new_header #set the header row as the df header
-  df_non_red
-  print("h2")
 
-def update_allo():
-  sheet = file.open("Allopathy")  #open sheet
-  sheet = sheet.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+  sheet_3 = file.open("Allopathy")  #open sheet
+  sheeta = sheet_3.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
 
-  rows = sheet.get_all_values()
+  rows = sheeta.get_all_values()
   #print(rows)
 
   df_allo = pd.DataFrame.from_records(rows)
   new_header = df_allo.iloc[0] #grab the first row for the header
   df_allo = df_allo[1:] #take the data less the header row
   df_allo.columns = new_header #set the header row as the df header
-  df_allo
-  print("h3")
 
-def update_master():
   result = [df_non_green , df_non_red , df_allo]
-  df= pd.concat(result)
+  df_master= pd.concat(result)
 
-  lst = df.to_numpy().tolist()
-  headers = df.columns.tolist()
+  lst = df_master.to_numpy().tolist()
+  headers = df_master.columns.tolist()
 
   data = [headers] + lst
   #print(data)
@@ -171,54 +164,117 @@ def update_master():
 
 
   sheet.update(None, data)
-  print("h4")
 
 def update_warehouse():
+  sheet_1w = file.open("NonAllopathy_Green")  #open sheet
+  sheetgw = sheet_1w.sheet1 
+  rows_gw = sheetgw.get_all_values()
+  df_non_green = pd.DataFrame.from_records(rows_gw)
+  new_header = df_non_green.iloc[0] #grab the first row for the header
+  df_non_green = df_non_green[1:] #take the data less the header row
+  df_non_green.columns = new_header #set the header row as the df header
+
+  sheet_2w = file.open("NonAllopathy_Red")  #open sheet
+  sheetrw = sheet_2w.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+  rows_rw = sheetrw.get_all_values()
+  #print(rows)
+  df_non_red = pd.DataFrame.from_records(rows_rw)
+  new_header = df_non_red.iloc[0] #grab the first row for the header
+  df_non_red = df_non_red[1:] #take the data less the header row
+  df_non_red.columns = new_header #set the header row as the df header
+
+  sheet_3w = file.open("Allopathy")  #open sheet
+  sheetaw = sheet_3w.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+
+  rows_aw = sheetaw.get_all_values()
+  #print(rows)
+
+  df_allo = pd.DataFrame.from_records(rows_aw)
+  new_header = df_allo.iloc[0] #grab the first row for the header
+  df_allo = df_allo[1:] #take the data less the header row
+  df_allo.columns = new_header #set the header row as the df header
+
+
+
   df_non_green_packed = df_non_green[df_non_green['Operations']=='Packed']
   df_allo_packed = df_allo[df_allo['Operations']=='Packed']
   df_non_red_packed = df_non_red[df_non_red['Operations']=='Packed']
 
-  result = [df_non_green_packed , df_allo_packed , df_non_red_packed]
+  result1 = [df_non_green_packed , df_allo_packed , df_non_red_packed]
 
-  df_packed = pd.concat(result)
-  df_packed.drop(df_packed[df_packed['Confirmed'] == 'Cancelled'].index, inplace = True)
+  df_packed_update = pd.concat(result1)
+  df_packed_update.drop(df_packed_update[df_packed_update['Confirmed'] == 'Cancelled'].index, inplace = True)
 
-  lst3 = df_packed.to_numpy().tolist()
-  headers3 = df_packed.columns.tolist()
-  data3 = [headers3] + lst3
+  lst7 = df_packed_update.to_numpy().tolist()
+  headers7 = df_packed_update.columns.tolist()
+  data7 = [headers7] + lst7
 
   sheet = file.open("Warehouse") 
-  sheet = sheet.sheet1 
+  sheet7 = sheet.sheet1 
 
   #worksheet_non_green = gc.open_by_key('https://docs.google.com/spreadsheets/d/18lJ-j8E3jb3ktTXWIEiV9E74-P6xBYTyJhjo0DwipMQ/edit#gid=478417104').sheet1
 
-  sheet.update(None, data3)
-  print("h5")
+  sheet7.update(None, data7)
 
 def update_cancelled():
+  sheet_1c = file.open("NonAllopathy_Green")  #open sheet
+  sheetgc = sheet_1c.sheet1 
+  rows_gc = sheetgc.get_all_values()
+  df_non_green = pd.DataFrame.from_records(rows_gc)
+  new_header = df_non_green.iloc[0] #grab the first row for the header
+  df_non_green = df_non_green[1:] #take the data less the header row
+  df_non_green.columns = new_header #set the header row as the df header
+
+  sheet_2c = file.open("NonAllopathy_Red")  #open sheet
+  sheetrc = sheet_2c.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+  rows_rc = sheetrc.get_all_values()
+  #print(rows)
+  df_non_red = pd.DataFrame.from_records(rows_rc)
+  new_header = df_non_red.iloc[0] #grab the first row for the header
+  df_non_red = df_non_red[1:] #take the data less the header row
+  df_non_red.columns = new_header #set the header row as the df header
+
+  sheet_3c = file.open("Allopathy")  #open sheet
+  sheetac = sheet_3c.sheet1  #replace sheet_name with the name that corresponds to yours, e.g, it can be sheet1
+
+  rows_ac = sheetac.get_all_values()
+  #print(rows)
+
+  df_allo = pd.DataFrame.from_records(rows_ac)
+  new_header = df_allo.iloc[0] #grab the first row for the header
+  df_allo = df_allo[1:] #take the data less the header row
+  df_allo.columns = new_header #set the header row as the df header
+
+
   df_non_green_cancelled = df_non_green[df_non_green['Confirmed']=='Cancelled']
   df_allo_cancelled = df_allo[df_allo['Confirmed']== 'Cancelled']
   df_non_red_cancelled = df_non_red[df_non_red['Confirmed']=='Cancelled']
   df_confirmation_cancelled = df[df['Confirmed']=='Cancelled']
 
-  res = [df_non_green_cancelled , df_allo_cancelled , df_non_red_cancelled]
+  res = [df_non_green_cancelled , df_allo_cancelled , df_non_red_cancelled , df_confirmation_cancelled]
 
-  df_cancelled = pd.concat(res)
 
-  lst4 = df_cancelled.to_numpy().tolist()
-  headers4 = df_cancelled.columns.tolist()
-  data4 = [headers4] + lst4
+  df_cancelled_updated = pd.concat(res)
+
+  lst8 = df_cancelled_updated.to_numpy().tolist()
+  headers8 = df_cancelled_updated.columns.tolist()
+  data8 = [headers8] + lst8
 
   sheet = file.open("Cancelled") 
-  sheet = sheet.sheet1 
+  sheet8 = sheet.sheet1 
 
 
-  sheet.update(None, data4)
-  print("h6")
+  sheet8.update(None, data8)
 
-schedule.every(4).seconds.do(update_nonallo_green)
-schedule.every(4).seconds.do(update_nonallo_red)
-schedule.every(4).seconds.do(update_allo)
+#pip install schedule
+
+import schedule 
+
+
+
+#schedule.every(4).seconds.do(update_nonallo_green)
+#schedule.every(4).seconds.do(update_nonallo_red)
+#schedule.every(4).seconds.do(update_allo)
 schedule.every(4).seconds.do(update_master)
 schedule.every(4).seconds.do(update_warehouse)
 schedule.every(4).seconds.do(update_cancelled)
